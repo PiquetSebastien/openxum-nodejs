@@ -247,5 +247,6 @@
 	"Making a move": "Making a move",
 	"Placing a marble and removing a board piece": "Placing a marble and removing a board piece",
 	"Capturing marbles": "Capturing marbles",
-	"You must try to capture either": "You must try to capture either"
+	"You must try to capture either": "You must try to capture either",
+	"Rules - Gipf by Kris Burm": "Rules - Gipf by Kris Burm"
 }
