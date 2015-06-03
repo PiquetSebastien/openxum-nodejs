@@ -264,7 +264,13 @@ exports.init = function (req, res) {
                 timeCreated: day,
                 account: account,
                 country: isoCountries[account.country],
+                notes: 1500,
+                gamename: "paletto",
+                win: 45,
+                lose: 20,
+                running: 1,
                 flag: 'flag ' + account.country.toLowerCase()});
         });
     });
 };
+
