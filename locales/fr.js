@@ -2,6 +2,7 @@
 	"Language": "Langue",
 	"Home": "Accueil",
 	"Games": "Jeux",
+    "Game": "Parties",
 	"Ranking": "Classement",
 	"FAQ": "FAQ",
 	"Sign Up": "Inscription",
@@ -10,6 +11,9 @@
 	"Players": "Joueurs",
 	"Account": "Mon compte",
 	"Logout": "Logout",
+	"wins": "victoires",
+	"loses": "défaites",
+	"running": "en cours",
 	"Rules - Invers by Kris Burm": "Règles du jeu - Invers de Kris Burm",
 	"Published by Peri Spiele 1991": "Publié par Peri Spiele en 1991",
 	"English translation be David Vander Ark; edited and formatted by W. Eric Martin": " ",
@@ -399,5 +403,9 @@
 	"When you are playing up to one point (Single Round), the game is over as soon as one player moves a dragon tower to his/her opponent's \"home row\". This player will be the winner. If you wish, you can play a series of single-round games (starting each time with each tower on the square that matches it). Score one point for each game, and take turns to play the first move.": "When you are playing up to one point (Single Round), the game is over as soon as one player moves a dragon tower to his/her opponent's \"home row\". This player will be the winner. If you wish, you can play a series of single-round games (starting each time with each tower on the square that matches it). Score one point for each game, and take turns to play the first move.",
 	"Rule M6: If it is impossible to move the required tower in any way (i.e. if it is completely blocked from moving forwards or diagonally forwards), the player whose turn it is to move that tower has to miss that turn, and his/her opponent moves again immediately.": "Rule M6: If it is impossible to move the required tower in any way (i.e. if it is completely blocked from moving forwards or diagonally forwards), the player whose turn it is to move that tower has to miss that turn, and his/her opponent moves again immediately.",
 	"Nom du jeu": "Nom du jeu",
-	"Stats of": "Stats of"
+	"Stats of": "Stats of",
+	"games": "Parties",
+	"Wins": "Victoires",
+	"Loses": "Défaites",
+	"Running": "En cours"
 }

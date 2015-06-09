@@ -250,5 +250,9 @@
 	"You must try to capture either": "You must try to capture either",
 	"Rules - Gipf by Kris Burm": "Rules - Gipf by Kris Burm",
 	"Nom du jeu": "Nom du jeu",
-	"Stats of": "Stats of"
+	"Stats of": "Stats of",
+	"games": "games",
+	"Wins": "Wins",
+	"Loses": "Loses",
+	"Running": "Running"
 }

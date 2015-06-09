@@ -1,5 +1,12 @@
 'use strict';
 
 exports.init = function(req, res){
-  res.render('players/index');
+
+    req.app.db.models.User.find({}, 'username', function (err, users) {
+           console.log(users);
+        res.render('players/index', {
+            users: users
+
+        });
+    });
 };

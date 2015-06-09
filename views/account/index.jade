@@ -51,15 +51,14 @@ block body
                     table.table
                             thead
                               tr
-                                th Games
+                                th #{__("Games")}
+                                th #{__("games")}
                                 th  ELO
-                                th Nombre de parties jouées (gagnée/perdues/en cours)
+                                th #{__("Wins")}/#{__("Loses")}/#{__("Running")}
 
                             tbody
                                tr
-                                 th #{gamename}
-                                 th #{notes}
-                                 th #{win} win   #{lose} lose   #{running} en cours
-
-
-
+                                 td #{gamename}
+                                 td #{tot}
+                                 td #{notes}
+                                 td #{win} / #{lose} /  #{running}    (#{pwin} %/#{plose} %)

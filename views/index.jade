@@ -5,10 +5,12 @@ block head
 
 block neck
   link(rel='stylesheet', href='/views/index.min.css?#{cacheBreaker}')
+  link(rel='stylesheet', href='layouts/test.css')
 
 block body
   script(src='/javascripts/Global.js')
   script(src='/javascripts/InfoClient.js')
+
 
   script(language='javascript').
     var client = new InfoClient();
@@ -20,19 +22,19 @@ block body
         h1 #{__("Welcome to OpenXum")}
       div.row
         div.col-sm-3
-          div.well.stat
+          div.wellPlay.stat:    a(href='/players/')
             div.stat-value #{count.countUser}
             div.stat-label #{__("Players")}
         div.col-sm-3
-          div.well.stat
+          div.wellGame.stat:    a(href='/games/')
             div.stat-value #{count.countGameType}
             div.stat-label #{__("Games")}
         div.col-sm-3
-          div.well.stat
+          div.wellIP.stat:    a(href='/games/')
             div.stat-value #{count.countGame}
             div.stat-label #{__("In progress games")}
         div.col-sm-3
-          div.well.stat
+          div.wellOL.stat:    a(href='/games/')
             #countPlayers.stat-value ---
             div.stat-label #{__("Online players")}
    div.row
