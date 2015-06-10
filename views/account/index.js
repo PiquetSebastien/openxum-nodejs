@@ -252,35 +252,41 @@ exports.init = function (req, res) {
 
     req.app.db.models.User.findOne({ username: req.user.username }, 'username email timeCreated', function (err, user) {
         req.app.db.models.Account.findById(req.user.roles.account.id, 'name country', function (err, account) {
-                var day;
+            req.app.db.models.GameType.find({}, 'name', function (err, games) {
 
-                if (req.i18n.getLocale() === 'en') {
-                    day = req.app.moment(user.timeCreated).format('MMM. d, YYYY');
-                } else if (req.i18n.getLocale() === 'fr') {
-                    day = req.app.moment(user.timeCreated).format('d MMMM YYYY');
-                }
-                var win = 45;
-                var lose = 20;
-                var tot = win+lose;
-                var pwin = Math.round((win*100)/tot);
-                var plose = Math.round((lose*100)/tot);
 
-                    res.render('account/index', {
-                    email: user.email,
-                    name: user.username,
-                    timeCreated: day,
-                    account: account,
-                    country: isoCountries[account.country],
-                    notes: 1500,
-                    gamename: 'Paletto',
-                    win: win,
-                    lose: lose,
-                    pwin: pwin,
-                    plose: plose,
-                    tot: tot,
-                    running: 1,
-                    flag: 'flag ' + account.country.toLowerCase()
-                    });
+
+                    var day;
+
+                    if (req.i18n.getLocale() === 'en') {
+                        day = req.app.moment(user.timeCreated).format('MMM. d, YYYY');
+                    } else if (req.i18n.getLocale() === 'fr') {
+                        day = req.app.moment(user.timeCreated).format('d MMMM YYYY');
+                    }
+                    var win = 0;
+                    var lose = 0;
+                    var tot = win+lose;
+                    var pwin = Math.round((win*100)/tot);
+                    var plose = Math.round((lose*100)/tot);
+
+                        res.render('account/index', {
+                        email: user.email,
+                        name: user.username,
+                        timeCreated: day,
+                        account: account,
+                        country: isoCountries[account.country],
+                        gamename: 'Paletto',
+                        flag: 'flag ' + account.country.toLowerCase(),
+                        games: games,
+                        win: win,
+                        lose: lose,
+                        pwin: pwin,
+                        plose: plose,
+                        tot: tot,
+                        running: 0,
+                        elo: 1500
+                        });
+            });
         });
     });
 };

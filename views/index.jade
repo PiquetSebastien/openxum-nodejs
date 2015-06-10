@@ -17,9 +17,9 @@ block body
     client.start();
 
   div.row
-    div.col-sm-10
-      div.page-header
-        h1 #{__("Welcome to OpenXum")}
+    div.col-sm-12
+      div.page-header.text-align: center
+        h1  #{__("Welcome to OpenXum")}
       div.row
         div.col-sm-3
           div.wellPlay.stat:    a(href='/players/')
@@ -41,14 +41,14 @@ block body
    H2 #{__("Last games")}
    ul.list-group
        each item in histo
-          li.list-group-item 
-             if (item.userCreated === item.winner) 
+          li.list-group-item
+             if (item.userCreated === item.winner)
                 b.span.text-warning.offset1 #{item.userCreated}
-                | VS  
+                | VS
                 b.span.text-info #{item.opponent}
-             else 
+             else
                 b.span.text-warning #{item.opponent}
-                |  VS  
-                b.span.text-info #{item.userCreated}    
-             
-             span.badge #{item.gameType} 
+                |  VS
+                b.span.text-info #{item.userCreated}
+
+             span.badge #{item.gameType}

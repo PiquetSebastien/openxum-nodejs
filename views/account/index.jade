@@ -55,10 +55,10 @@ block body
                                 th #{__("games")}
                                 th  ELO
                                 th #{__("Wins")}/#{__("Loses")}/#{__("Running")}
-
                             tbody
-                               tr
-                                 td #{gamename}
-                                 td #{tot}
-                                 td #{notes}
-                                 td #{win} / #{lose} /  #{running}    (#{pwin} %/#{plose} %)
+                                each game in games
+                                    tr
+                                        td #{game.name}
+                                        td #{tot}
+                                        td #{elo}
+                                        td #{win} / #{lose} / #{running}
