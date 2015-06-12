@@ -2,7 +2,7 @@
 	"Language": "Langue",
 	"Home": "Accueil",
 	"Games": "Jeux",
-    "Game": "Parties",
+	"Game": "Parties",
 	"Ranking": "Classement",
 	"FAQ": "FAQ",
 	"Sign Up": "Inscription",
@@ -407,5 +407,6 @@
 	"games": "Parties",
 	"Wins": "Victoires",
 	"Loses": "Défaites",
-	"Running": "En cours"
+	"Running": "En cours",
+	"Username": "Nom d'utilisateur"
 }

@@ -4,14 +4,22 @@ block head
   title Players
 
 block neck
-  link(rel='stylesheet', href='/views/index.min.css?#{cacheBreaker}')
+    link(rel='stylesheet', href='/views/index.min.css?#{cacheBreaker}')
 
 block body
-  div.row
-    div.col-sm-12
-      div.page-header
-        h1 #{__('Players')}
 
-        ul
-          each user in users
-            li #{user.username}
+  div.f32.row.vertical-offset-100
+  div.col-md-3.col-md-offset-5
+       div.panel-body
+
+                          table.table
+                                  thead
+                                    tr
+                                      th.text-align: center #{__("Username")}
+                                      th #{__("Country")}
+
+                                  tbody
+                                      each acc in account
+                                          tr
+                                              td #{acc.user.name}
+                                              td #{acc.country}

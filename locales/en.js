@@ -254,5 +254,6 @@
 	"games": "games",
 	"Wins": "Wins",
 	"Loses": "Loses",
-	"Running": "Running"
+	"Running": "Running",
+	"Username": "Username"
 }
