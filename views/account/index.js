@@ -252,58 +252,48 @@ exports.init = function (req, res) {
 
     req.app.db.models.User.findOne({ username: req.user.username }, 'username email timeCreated', function (err, user) {
         req.app.db.models.Account.findById(req.user.roles.account.id, 'name country', function (err, account) {
-            req.app.db.models.GameType.find({},'name', function (err,games){
                 req.app.db.models.Game.find({$or: [{ 'userCreated.id': req.user._id }, { 'opponent.id': req.user._id }]},null, function (err,gametypes){
+                    req.app.db.models.GameType.find({_id: gametypes.game}, 'name', function (err, games){
+                        req.app.db.models.GameType.find({}, function (err, gamestype){
+
+                            console.log(games);
+
+                            var day;
 
 
-                    var day;
-                    var gamesplay=[];
+                                    if (req.i18n.getLocale() === 'en') {
+                                        day = req.app.moment(user.timeCreated).format('MMM. d, YYYY');
+                                    } else if (req.i18n.getLocale() === 'fr') {
+                                        day = req.app.moment(user.timeCreated).format('d MMMM YYYY');
+                                    }
+                                    var win = 0;
+                                    var lose = 0;
+                                    var pwin = Math.round((win*100)/tot);
+                                    var plose = Math.round((lose*100)/tot);
 
-                        for (var i in gametypes){
-
-
-                            //console.log(gametypes[i].game);
-                            req.app.db.models.GameType.find({_id: gametypes[i].game}, 'name', function (err,bb){
-                                gamesplay.push([bb[0].name]);
-                                 console.log(bb[0].name);
-                            });
-                            //console.log(bb[0].name);
-
-                        }
-
-
-                            if (req.i18n.getLocale() === 'en') {
-                                day = req.app.moment(user.timeCreated).format('MMM. d, YYYY');
-                            } else if (req.i18n.getLocale() === 'fr') {
-                                day = req.app.moment(user.timeCreated).format('d MMMM YYYY');
-                            }
-                            var win = 0;
-                            var lose = 0;
-                            var tot =0;
-                            var pwin = Math.round((win*100)/tot);
-                            var plose = Math.round((lose*100)/tot);
-
-                                res.render('account/index', {
-                                email: user.email,
-                                name: user.username,
-                                timeCreated: day,
-                                account: account,
-                                country: isoCountries[account.country],
-                                gamename: 'Paletto',
-                                flag: 'flag ' + account.country.toLowerCase(),
-                                gamesplay: gamesplay,
-                                gametypes: gametypes,
-                                games: games,
-                                win: win,
-                                lose: lose,
-                                pwin: pwin,
-                                plose: plose,
-                                tot: 0,
-                                running: 0,
-                                elo: 1500
-                                });
+                                        res.render('account/index', {
+                                        email: user.email,
+                                        name: user.username,
+                                        timeCreated: day,
+                                        account: account,
+                                        country: isoCountries[account.country],
+                                        gamename: 'Paletto',
+                                        flag: 'flag ' + account.country.toLowerCase(),
+                                        gametypes: gametypes,
+                                        games: games,
+                                        gamestype: gamestype,
+                                        win: win,
+                                        lose: lose,
+                                        pwin: pwin,
+                                        plose: plose,
+                                        tot: 0,
+                                        running: 0,
+                                        elo: 1500
+                                        });
+                       }).sort({name:1});
+                    });
                 });
-            });
         });
     });
+
 };
