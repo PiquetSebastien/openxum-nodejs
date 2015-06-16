@@ -249,51 +249,132 @@ var isoCountries = {
 };
 
 exports.init = function (req, res) {
-
     req.app.db.models.User.findOne({ username: req.user.username }, 'username email timeCreated', function (err, user) {
         req.app.db.models.Account.findById(req.user.roles.account.id, 'name country', function (err, account) {
-                req.app.db.models.Game.find({$or: [{ 'userCreated.id': req.user._id }, { 'opponent.id': req.user._id }]},null, function (err,gametypes){
-                    req.app.db.models.GameType.find({_id: gametypes.game}, 'name', function (err, games){
-                        req.app.db.models.GameType.find({}, function (err, gamestype){
+            req.app.db.models.Game.find({$or: [
+                { 'userCreated.id': req.user._id },
+                { 'opponent.id': req.user._id }
+            ]}, null, function (err, games) {
 
-                            console.log(games);
+                var last = [];
+                var queries = [];
 
-                            var day;
+                if (games.length > 0) {
+                    for (var key in games) {
+                        var itemdata = {};
+                        var item = games[key];
 
-
-                                    if (req.i18n.getLocale() === 'en') {
-                                        day = req.app.moment(user.timeCreated).format('MMM. d, YYYY');
-                                    } else if (req.i18n.getLocale() === 'fr') {
-                                        day = req.app.moment(user.timeCreated).format('d MMMM YYYY');
+                        queries.push(function (done) {
+                            req.app.db.models.GameType.findOne({_id: item.game}, 'name',
+                                { safe: true }, function (err, game_type) {
+                                    if (err) {
+                                        return done(err, null);
                                     }
-                                    var win = 0;
-                                    var lose = 0;
-                                    var pwin = Math.round((win*100)/tot);
-                                    var plose = Math.round((lose*100)/tot);
+                                    itemdata.name = game_type.name;
+                                    console.log(itemdata.name);
 
-                                        res.render('account/index', {
-                                        email: user.email,
-                                        name: user.username,
-                                        timeCreated: day,
-                                        account: account,
-                                        country: isoCountries[account.country],
-                                        gamename: 'Paletto',
-                                        flag: 'flag ' + account.country.toLowerCase(),
-                                        gametypes: gametypes,
-                                        games: games,
-                                        gamestype: gamestype,
-                                        win: win,
-                                        lose: lose,
-                                        pwin: pwin,
-                                        plose: plose,
-                                        tot: 0,
-                                        running: 0,
-                                        elo: 1500
-                                        });
-                       }).sort({name:1});
-                    });
-                });
+                                    last.push(itemdata.name);
+                                    done(null);
+                                });
+                        });
+                    }
+                }
+
+                var asyncFinally = function (err, results) {
+                    if (err) {
+                        return next(err);
+                    }
+
+                    req.app.db.models.GameType.find({},function (err, gamestype) {
+                        var day;
+
+                        if (req.i18n.getLocale() === 'en') {
+                            day = req.app.moment(user.timeCreated).format('MMM. d, YYYY');
+                        } else if (req.i18n.getLocale() === 'fr') {
+                            day = req.app.moment(user.timeCreated).format('d MMMM YYYY');
+                        }
+                        var win = 0;
+                        var lose = 0;
+                        var tot = 0;
+                        var pwin = Math.round((win * 100) / tot);
+                        var plose = Math.round((lose * 100) / tot);
+
+                        console.log(last);
+
+                        res.render('account/index', {
+                            email: user.email,
+                            name: user.username,
+                            timeCreated: day,
+                            account: account,
+                            country: isoCountries[account.country],
+                            gamename: 'Paletto',
+                            flag: 'flag ' + account.country.toLowerCase(),
+                            gametypes: games,
+                            gamestype: gamestype,
+                            last: last,
+                            win: win,
+                            lose: lose,
+                            pwin: pwin,
+                            plose: plose,
+                            tot: 0,
+                            running: 0,
+                            elo: 1500
+                        });
+                    }).sort({name: 1});
+                };
+
+                require('async').parallel(queries, asyncFinally);
+
+
+            });
+            //console.log(last);
         });
     });
-
 };
+
+/*exports.init = function (req, res, next) {
+
+ var queries = [];
+ var last = [];
+
+ queries.push(function (done) {
+ req.app.db.models.Game.find({$or: [{ 'userCreated.id': req.user._id }, { 'opponent.id': req.user._id }]},null,
+ { safe: true }, function (err, gamesplay) {
+ if (gamesplay.length > 0) {
+ for (var key in gamesplay) {
+ console.log('bonosir')
+ var itemdata = {};
+ var item = gamesplay[key];
+
+ req.app.db.models.GameType.findOne({_id: item.game }, null,
+ { safe: true }, function (err, gametypes) {
+ itemdata.name = gametypes.name;
+ last.push(itemdata);
+ if (last.length === gametypes bnàè .length) {
+ done(null, last);
+ }
+ //console.log(last);
+ });
+
+ }
+ } else {
+ done(null);
+ }
+ });
+
+ console.log("on quitte");
+ });
+
+
+
+ var asyncFinally = function (err, results) {
+ if (err) {
+ return next(err);
+ }
+
+ // res.render('account/index', {  histo: last });
+ };
+ console.log(queries);
+ require('async').parallel(queries, asyncFinally);
+ };*/
+
