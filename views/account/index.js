@@ -249,6 +249,7 @@ var isoCountries = {
 };
 
 exports.init = function (req, res) {
+
     req.app.db.models.User.findOne({ username: req.user.username }, 'username email timeCreated', function (err, user) {
         req.app.db.models.Account.findById(req.user.roles.account.id, 'name country', function (err, account) {
             req.app.db.models.Game.find({$or: [
@@ -258,26 +259,26 @@ exports.init = function (req, res) {
 
                 var last = [];
                 var queries = [];
+                var tot = {"dvonn": 0,"gipf": 0,"invers":0,"kamisado":0,"pentago":0,"tzaar":0,"yinsh":0,"zertz":0};
 
                 if (games.length > 0) {
-                    for (var key in games) {
-                        var itemdata = {};
-                        var item = games[key];
+                    games.forEach(function(game) {
 
                         queries.push(function (done) {
-                            req.app.db.models.GameType.findOne({_id: item.game}, 'name',
+
+                            req.app.db.models.GameType.findOne({_id: game.game}, 'name',
                                 { safe: true }, function (err, game_type) {
+
                                     if (err) {
                                         return done(err, null);
                                     }
-                                    itemdata.name = game_type.name;
-                                    console.log(itemdata.name);
 
-                                    last.push(itemdata.name);
+                                    last.push(game_type.name);
                                     done(null);
+                                    tot[game_type.name]++;
                                 });
                         });
-                    }
+                    });
                 }
 
                 var asyncFinally = function (err, results) {
@@ -286,6 +287,7 @@ exports.init = function (req, res) {
                     }
 
                     req.app.db.models.GameType.find({},function (err, gamestype) {
+
                         var day;
 
                         if (req.i18n.getLocale() === 'en') {
@@ -293,13 +295,9 @@ exports.init = function (req, res) {
                         } else if (req.i18n.getLocale() === 'fr') {
                             day = req.app.moment(user.timeCreated).format('d MMMM YYYY');
                         }
-                        var win = 0;
-                        var lose = 0;
-                        var tot = 0;
-                        var pwin = Math.round((win * 100) / tot);
-                        var plose = Math.round((lose * 100) / tot);
 
-                        console.log(last);
+                        var win = {"dvonn": 0,"gipf": 0,"invers":0,"kamisado":0,"pentago":1,"tzaar":0,"yinsh":0,"zertz":0};
+                        var lose = 0;
 
                         res.render('account/index', {
                             email: user.email,
@@ -314,67 +312,14 @@ exports.init = function (req, res) {
                             last: last,
                             win: win,
                             lose: lose,
-                            pwin: pwin,
-                            plose: plose,
-                            tot: 0,
+                            tot: tot,
                             running: 0,
                             elo: 1500
                         });
-                    }).sort({name: 1});
+                    });
                 };
-
                 require('async').parallel(queries, asyncFinally);
-
-
             });
-            //console.log(last);
         });
     });
 };
-
-/*exports.init = function (req, res, next) {
-
- var queries = [];
- var last = [];
-
- queries.push(function (done) {
- req.app.db.models.Game.find({$or: [{ 'userCreated.id': req.user._id }, { 'opponent.id': req.user._id }]},null,
- { safe: true }, function (err, gamesplay) {
- if (gamesplay.length > 0) {
- for (var key in gamesplay) {
- console.log('bonosir')
- var itemdata = {};
- var item = gamesplay[key];
-
- req.app.db.models.GameType.findOne({_id: item.game }, null,
- { safe: true }, function (err, gametypes) {
- itemdata.name = gametypes.name;
- last.push(itemdata);
- if (last.length === gametypes bnàè .length) {
- done(null, last);
- }
- //console.log(last);
- });
-
- }
- } else {
- done(null);
- }
- });
-
- console.log("on quitte");
- });
-
-
-
- var asyncFinally = function (err, results) {
- if (err) {
- return next(err);
- }
-
- // res.render('account/index', {  histo: last });
- };
- console.log(queries);
- require('async').parallel(queries, asyncFinally);
- };*/
-

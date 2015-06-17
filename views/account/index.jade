@@ -56,10 +56,10 @@ block body
                                 th  ELO
                                 th #{__("Wins")}/#{__("Loses")}/#{__("Running")}
                             tbody
-                                each game, index in last
+                                each game in last
 
                                     tr
                                         td #{game}
-                                        td #{tot}
+                                        td #{tot[game]}
                                         td #{elo}
-                                        td #{win} / #{lose} / #{running}
+                                        td #{win[game]} / #{lose} / #{running}
