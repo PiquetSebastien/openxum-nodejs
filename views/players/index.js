@@ -256,8 +256,7 @@ exports.init = function(req, res){
 
             res.render('players/index', {
 
-                account: account,
-                //country: isoCountries[account[1].country]
+                account: account
             });
     });
 };
