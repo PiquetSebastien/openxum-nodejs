@@ -257,7 +257,6 @@ exports.init = function (req, res) {
                 { 'opponent.id': req.user._id }
             ]}, null, function (err, games) {
 
-                var last = [];
                 var queries = [];
                 var tot = {"dvonn": 0,"gipf": 0,"invers":0,"kamisado":0,"pentago":0,"tzaar":0,"yinsh":0,"zertz":0};
 
@@ -273,7 +272,6 @@ exports.init = function (req, res) {
                                         return done(err, null);
                                     }
 
-                                    last.push(game_type.name);
                                     done(null);
                                     tot[game_type.name]++;
                                 });
@@ -296,8 +294,8 @@ exports.init = function (req, res) {
                             day = req.app.moment(user.timeCreated).format('d MMMM YYYY');
                         }
 
-                        var win = {"dvonn": 0,"gipf": 0,"invers":0,"kamisado":0,"pentago":1,"tzaar":0,"yinsh":0,"zertz":0};
-                        var lose = 0;
+                        var win = {"dvonn": 0,"gipf": 0,"invers":0,"kamisado":0,"pentago":0,"tzaar":0,"yinsh":0,"zertz":0};
+                        var lose = {"dvonn": 0,"gipf": 0,"invers":0,"kamisado":0,"pentago":0,"tzaar":0,"yinsh":0,"zertz":0};
 
                         res.render('account/index', {
                             email: user.email,
@@ -309,7 +307,6 @@ exports.init = function (req, res) {
                             flag: 'flag ' + account.country.toLowerCase(),
                             gametypes: games,
                             gamestype: gamestype,
-                            last: last,
                             win: win,
                             lose: lose,
                             tot: tot,
